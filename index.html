@@ -1,94 +1,118 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>หน้าแรก - เว็บไซต์ของฉัน</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            background-color: #f4f6f9;
-            color: #333;
-        }
-        header {
-            background-color: #2c3e50;
-            color: #ffffff;
-            padding: 1rem 0;
-            text-align: center;
-        }
-        nav {
-            margin-top: 10px;
-        }
-        nav a {
-            color: #ffffff;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: 500;
-        }
-        nav a:hover {
-            color: #3498db;
-        }
-        .hero {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 40px 20px;
-            background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        .hero h2 {
-            margin-bottom: 15px;
-            color: #2c3e50;
-        }
-        .btn {
-            display: inline-block;
-            background-color: #3498db;
-            color: #ffffff;
-            padding: 10px 25px;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
-            transition: background 0.3s;
-        }
-        .btn:hover {
-            background-color: #2980b9;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #7f8c8d;
-            font-size: 0.9rem;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS Dynamic Web App</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
+    body { background-color: #0f172a; color: #f8fafc; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+    #app { width: 100%; max-width: 500px; }
+    .card { background: #1e293b; padding: 24px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); border: 1px solid #334155; }
+    .header { text-align: center; margin-bottom: 20px; }
+    .clock { font-size: 2rem; font-weight: bold; color: #38bdf8; margin: 10px 0; }
+    .input-group { display: flex; gap: 8px; margin-bottom: 20px; }
+    input[type="text"] { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: #fff; outline: none; }
+    input[type="text"]:focus { border-color: #38bdf8; }
+    button.add-btn { background: #38bdf8; color: #0f172a; border: none; padding: 12px 18px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+    button.add-btn:hover { background: #7dd3fc; }
+    .task-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .task-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #334155; border-radius: 8px; animation: fadeIn 0.3s ease; }
+    .task-item.completed span { text-decoration: line-through; color: #94a3b8; }
+    .actions { display: flex; gap: 8px; }
+    .btn-action { border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
+    .btn-done { background: #22c55e; color: #fff; }
+    .btn-del { background: #ef4444; color: #fff; }
+    .stats { margin-top: 20px; font-size: 0.9rem; color: #94a3b8; text-align: center; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
 </head>
 <body>
 
-    <header>
-        <h1>My Website</h1>
-        <nav>
-            <a href="index.html">หน้าแรก</a>
-            <a href="#">เกี่ยวกับเรา</a>
-            <a href="#">บริการ</a>
-            <a href="#">ติดต่อเรา</a>
-        </nav>
-    </header>
+  <!-- จุดรับโครงสร้าง HTML ที่ถูกสร้างโดย JavaScript -->
+  <div id="app"></div>
 
-    <main class="hero">
-        <h2>ยินดีต้อนรับสู่เว็บไซต์ของเรา</h2>
-        <p>นี่คือหน้า index.html ตัวอย่างที่สร้างขึ้นด้วยโครงสร้าง HTML5 และตกแต่งด้วย CSS เบื้องต้น คุณสามารถแก้ไขข้อความ เพิ่มรูปภาพ หรือปรับแต่งสีตามที่ต้องการได้เลย</p>
-        <a href="#" class="btn">เริ่มต้นใช้งาน</a>
-    </main>
+  <script>
+    // ข้อมูล State ของแอปพลิเคชัน
+    let tasks = [
+      { id: 1, text: 'ยินดีต้อนรับสู่แอปที่สร้างด้วย JS!', completed: false }
+    ];
 
-    <footer>
-        <p>&copy; 2026 สงวนลิขสิทธิ์โดยเว็บไซต์ของฉัน</p>
-    </footer>
+    const app = document.getElementById('app');
 
+    // ฟังก์ชันสร้างและ Render โครงสร้าง HTML ทั้งหมด
+    function renderApp() {
+      app.innerHTML = `
+        <div class="card">
+          <div class="header">
+            <h2>Dynamic Dashboard</h2>
+            <div class="clock" id="clock-display">00:00:00</div>
+          </div>
+          <div class="input-group">
+            <input type="text" id="task-input" placeholder="เพิ่มรายการงาน..." />
+            <button class="add-btn" onclick="addTask()">เพิ่ม</button>
+          </div>
+          <ul class="task-list">
+            ${tasks.map(task => `
+              <li class="task-item ${task.completed ? 'completed' : ''}">
+                <span>${escapeHtml(task.text)}</span>
+                <div class="actions">
+                  <button class="btn-action btn-done" onclick="toggleTask(${task.id})">
+                    ${task.completed ? 'ยกเลิก' : 'เสร็จ'}
+                  </button>
+                  <button class="btn-action btn-del" onclick="deleteTask(${task.id})">ลบ</button>
+                </div>
+              </li>
+            `).join('')}
+          </ul>
+          <div class="stats">
+            งานทั้งหมด: ${tasks.length} | เสร็จแล้ว: ${tasks.filter(t => t.completed).length}
+          </div>
+        </div>
+      `;
+
+      // รองรับการกด Enter ในช่อง Input
+      document.getElementById('task-input')?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') addTask();
+      });
+    }
+
+    // ฟังก์ชันจัดการ Logic ต่างๆ
+    function addTask() {
+      const input = document.getElementById('task-input');
+      const text = input.value.trim();
+      if (text) {
+        tasks.push({ id: Date.now(), text, completed: false });
+        renderApp();
+      }
+    }
+
+    function toggleTask(id) {
+      tasks = tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
+      renderApp();
+    }
+
+    function deleteTask(id) {
+      tasks = tasks.filter(t => t.id !== id);
+      renderApp();
+    }
+
+    function updateClock() {
+      const clockEl = document.getElementById('clock-display');
+      if (clockEl) {
+        const now = new Date();
+        clockEl.textContent = now.toLocaleTimeString('th-TH');
+      }
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/[&<>"']/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+    }
+
+    // เริ่มต้นทำงาน
+    renderApp();
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
 </body>
 </html>
